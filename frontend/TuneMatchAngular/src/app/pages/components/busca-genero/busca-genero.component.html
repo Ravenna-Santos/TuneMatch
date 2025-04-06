@@ -1,0 +1,30 @@
+<div class="busca-genero">
+  <input
+    type="text"
+    [(ngModel)]="genero"
+    placeholder="Buscar por gênero..."
+  />
+  <button (click)="buscarPorGenero()">Buscar</button>
+</div>
+
+<div class="musica-genero, Sportify">
+  <div *ngFor="let musica of musicasVisiveisGenero">
+    <iframe
+      frameborder="0"
+      allowtransparency="true"
+      allow="encrypted-media"
+      [src]="musica.spotifyUrlSegura"
+    ></iframe>
+  </div>
+</div>
+
+
+<div style="text-align: center; margin-top: 20px;">
+  <button 
+    *ngIf="musicasVisiveisGenero.length < musicasPorGenero.length" 
+    (click)="carregarMais()"
+    class="botao-carregar-mais"
+  >
+    Carregar mais
+  </button>
+</div>

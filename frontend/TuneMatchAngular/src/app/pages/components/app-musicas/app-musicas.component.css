@@ -1,0 +1,56 @@
+.opcoes-busca {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+.opcoes-busca label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 500;
+  gap: 0.5rem;
+  background-color: #1e1e1e;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  transition: background-color 0.2s;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+}
+
+.opcoes-busca label:hover {
+  background-color: #333;
+}
+
+.opcoes-busca input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid #1db954;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.opcoes-busca input[type="radio"]::before {
+  content: "";
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #1db954;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.opcoes-busca input[type="radio"]:checked::before {
+  opacity: 1;
+}

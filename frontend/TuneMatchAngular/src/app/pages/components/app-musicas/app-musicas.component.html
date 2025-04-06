@@ -1,0 +1,19 @@
+
+<div class="opcoes-busca">
+    <label>
+      <input type="radio" name="tipoBusca" value="titulo" [(ngModel)]="tipoBusca" />
+      Buscar por título
+    </label>
+    <label>
+      <input type="radio" name="tipoBusca" value="genero" [(ngModel)]="tipoBusca" />
+      Buscar por gênero
+    </label>
+  </div>
+  
+<div *ngIf="tipoBusca === 'titulo'" class="busca-titulo">
+<busca-titulo></busca-titulo>
+</div>
+<div *ngIf="tipoBusca === 'genero'" class="busca-genero">
+<app-busca-genero></app-busca-genero>
+</div>
+<br>
