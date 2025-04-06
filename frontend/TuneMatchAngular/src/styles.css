@@ -1,0 +1,30 @@
+/* You can add global styles to this file, and also import other style files */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #121212;
+}
+/* Para navegadores Webkit (Chrome, Edge, Opera, Safari) */
+::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #2e2e2e; /* mesmo fundo do site */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #1db954; /* verdinho do Spotify */
+    border-radius: 10px;
+    border: 2px solid #2e2e2e; /* faz parecer que o thumb "flutua" */
+  }
+  
+  /* Para Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #1db954 #2e2e2e;
+  }
+  main {
+    font-family: 'Inter', sans-serif;
+  }

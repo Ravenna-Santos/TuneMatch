@@ -1,0 +1,56 @@
+<div class="selecionador-container">
+    <input
+      type="text"
+      [(ngModel)]="filtro"
+      (input)="filtrarMusicas()"
+      placeholder="Buscar música..."
+      class="input"
+    />
+  
+    <ul *ngIf="filtro && musicasFiltradas.length" class="sugestoes">
+      <li
+        *ngFor="let musica of musicasFiltradas"
+        (click)="selecionarMusica(musica)"
+      >
+      {{ musica.titulo }} — {{ musica.artistas.join(', ') }}
+      </li>
+    </ul>
+  
+    <div class="selecionadas">
+      <span
+        *ngFor="let musica of musicasSelecionadas"
+        class="tag"
+      >
+        {{ musica.titulo }}
+        <button (click)="removerMusica(musica)">X</button>
+      </span>
+    </div>
+  </div>
+  
+  <button 
+    *ngIf="musicasSelecionadas.length > 0"
+    (click)="sugerirPlaylist()"
+  >
+    Sugerir Playlist
+  </button>
+  
+<div class="Sportify">  <iframe
+    *ngFor="let musica of musicasRecomendadasVisiveis"
+    [src]="musica.spotifyUrlSegura"
+    width="300"
+    height="80"
+    frameborder="0"
+    allowtransparency="true"
+    allow="encrypted-media"
+  ></iframe>
+</div>
+  
+  <div style="text-align: center; margin-top: 20px;">
+    <button 
+      *ngIf="musicasRecomendadasVisiveis.length < musicasRecomendadasTodas.length" 
+      (click)="carregarMais()"
+      class="botao-carregar-mais"
+    >
+      Carregar mais
+    </button>
+  </div>
