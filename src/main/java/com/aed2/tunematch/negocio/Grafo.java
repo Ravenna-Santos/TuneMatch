@@ -80,47 +80,45 @@ public class Grafo {
         return musicas;
     }
 
-    //A recomendação das músicas deve pegar a lista de adjacência e retornar as mais próximas com maior peso
     public List<Musica> recomendarMusicas(List<Musica> musicasBase) {
-        Set<Musica> visitados = new HashSet<>(musicasBase);
+        Set<Musica> visitados = new HashSet<>(musicasBase); // Conjunto para evitar ciclos e repetições
+        Map<Musica, Double> mapaPesos = new HashMap<>(); // Acumula os pesos de conexões com as músicas base
+    
+        // Acumular pesos de todas as conexões de todas as músicas da base
+        for (Musica musica : musicasBase) {
+            if (!listaAdjacencia.containsKey(musica.getId())) continue;
+    
+            for (Map.Entry<Musica, Double> entrada : listaAdjacencia.get(musica.getId()).entrySet()) {
+                Musica vizinho = this.musicas.get(entrada.getKey().getId());
+                if (vizinho == null || visitados.contains(vizinho)) continue;
+    
+                // Soma os pesos para vizinhos em comum entre músicas base
+                mapaPesos.merge(vizinho, entrada.getValue(), Double::sum);
+            }
+        }
+    
+        // Criar fila de prioridade com base nos pesos acumulados
         PriorityQueue<Map.Entry<Musica, Double>> fila_de_prioridade = new PriorityQueue<>(
             (a, b) -> Double.compare(b.getValue(), a.getValue()) // Ordenação decrescente por peso
         );
-    
-        // Coletar todas as conexões diretas das músicas base
-        for (Musica musica : musicasBase) {
-            // Verifica se está inserida no grafo
-            if (!listaAdjacencia.containsKey(musica.getId())) continue;
-            
-            for (Map.Entry<Musica, Double> entrada : listaAdjacencia.get(musica.getId()).entrySet()) {
-                Musica vizinho = this.musicas.get(entrada.getKey().getId());
-                if (vizinho != null){
-                    if(visitados.contains(vizinho)) {
-                        entrada.setValue(entrada.getValue() * 1.5);
-                    } else {
-                        fila_de_prioridade.offer(Map.entry(vizinho, entrada.getValue()));
-                    }
-                }
-            }
-        }
+        fila_de_prioridade.addAll(mapaPesos.entrySet());
     
         List<Musica> recomendacoes = new ArrayList<>();
         while (!fila_de_prioridade.isEmpty() && recomendacoes.size() < 30) {
             Map.Entry<Musica, Double> maisRelacionado = fila_de_prioridade.poll();
-
-            if(!recomendacoes.contains(maisRelacionado.getKey())){
+    
+            if (!recomendacoes.contains(maisRelacionado.getKey())) {
                 recomendacoes.add(maisRelacionado.getKey());
                 visitados.add(maisRelacionado.getKey());
             }
-
-            // Explorar os vizinhos das músicas recomendadas
-            for (Map.Entry<Musica, Double> entrada : listaAdjacencia.get(maisRelacionado.getKey().getId()).entrySet()) {
-                Musica vizinho = this.musicas.get(entrada.getKey().getId());
-                if (vizinho != null){
-                    if(visitados.contains(vizinho)) {
-                        entrada.setValue(entrada.getValue() * 1.5);
-                    } else {
-                        fila_de_prioridade.offer(Map.entry(vizinho, entrada.getValue()));
+    
+            // Explorar vizinhos das músicas recomendadas para aumentar a profundidade da recomendação
+            if (listaAdjacencia.containsKey(maisRelacionado.getKey().getId())) {
+                for (Map.Entry<Musica, Double> entrada : listaAdjacencia.get(maisRelacionado.getKey().getId()).entrySet()) {
+                    Musica vizinho = this.musicas.get(entrada.getKey().getId());
+                    if (vizinho != null && !visitados.contains(vizinho)) {
+                        mapaPesos.merge(vizinho, entrada.getValue(), Double::sum);
+                        fila_de_prioridade.offer(Map.entry(vizinho, mapaPesos.get(vizinho)));
                     }
                 }
             }
